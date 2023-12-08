@@ -4,28 +4,28 @@ import java.io.Serializable;
 
 public class WrapperDTD implements Serializable {
 
-    private M_Transaccion_DTO transaccionDto;
-    private M_Cuenta_DTO cuentaDto;
+    private TransactionDTO transaccionDto;
+    private AccountDTO cuentaDto;
 
-    public WrapperDTD(M_Transaccion_DTO transaccionDto, M_Cuenta_DTO cuentaDto) {
+    public WrapperDTD(TransactionDTO transaccionDto, AccountDTO cuentaDto) {
         this.transaccionDto = transaccionDto;
         this.cuentaDto = cuentaDto;
     }
 
 
-    public M_Transaccion_DTO getTransaccionDto() {
+    public TransactionDTO getTransaccionDto() {
         return transaccionDto;
     }
 
-    public void setTransaccionDto(M_Transaccion_DTO transaccionDto) {
+    public void setTransaccionDto(TransactionDTO transaccionDto) {
         this.transaccionDto = transaccionDto;
     }
 
-    public M_Cuenta_DTO getCuentaDto() {
+    public AccountDTO getCuentaDto() {
         return cuentaDto;
     }
 
-    public void setCuentaDto(M_Cuenta_DTO cuentaDto) {
+    public void setCuentaDto(AccountDTO cuentaDto) {
         this.cuentaDto = cuentaDto;
     }
 }

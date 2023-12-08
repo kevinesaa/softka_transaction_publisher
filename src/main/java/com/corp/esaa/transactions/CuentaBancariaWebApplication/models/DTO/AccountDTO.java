@@ -5,19 +5,19 @@ package com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO;
 import java.math.BigDecimal;
 
 
-public class M_Cuenta_DTO
+public class AccountDTO
 {
     //@NotNull(message = "[CUENTA] [id] Campo Requerido: Id.")
     private String id;
 
-     private M_Cliente_DTO cliente;
+     private CustomerDTO cliente;
 
      //@Digits(integer = 7, fraction = 2, message = "[CUENTA] [saldo_Global] El Formato del Saldo debe ser 7 digitos enteros y 2 decimales")
     private BigDecimal saldo_Global;
 
 
 
-    public M_Cuenta_DTO(String id, M_Cliente_DTO cliente, BigDecimal saldo_Global) {
+    public AccountDTO(String id, CustomerDTO cliente, BigDecimal saldo_Global) {
         this.id = id;
         this.cliente = cliente;
         this.saldo_Global = saldo_Global;
@@ -31,11 +31,11 @@ public class M_Cuenta_DTO
         this.id = id;
     }
 
-    public M_Cliente_DTO getCliente() {
+    public CustomerDTO getCliente() {
         return cliente;
     }
 
-    public void setCliente(M_Cliente_DTO cliente) {
+    public void setCliente(CustomerDTO cliente) {
         this.cliente = cliente;
     }
 

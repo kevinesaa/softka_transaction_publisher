@@ -1,25 +1,23 @@
 package com.corp.esaa.transactions.CuentaBancariaWebApplication.services.Cuenta;
 
 import com.corp.esaa.transactions.CuentaBancariaWebApplication.drivenAdapters.bus.RabbitMqPublisher;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.drivenAdapters.repositorios.I_RepositorioCuentaMongo;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.M_Cliente_DTO;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.M_Cuenta_DTO;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.Mongo.M_ClienteMongo;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.Mongo.M_CuentaMongo;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.drivenAdapters.repositorios.IAccountRepository;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.CustomerDTO;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.AccountDTO;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.Mongo.Customer;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.Mongo.Account;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.rabbitmq.Sender;
 
 
-@Service()
-@Qualifier("MONGO")
-public class Cuenta_ImpMongo implements I_Cuenta
+@Service
+public class AccountService implements IAccountService
 {
     @Autowired
-    I_RepositorioCuentaMongo repositorio_Cuenta;
+    IAccountRepository repositorio_Cuenta;
 
     @Autowired
     private RabbitMqPublisher eventBus;
@@ -28,10 +26,10 @@ public class Cuenta_ImpMongo implements I_Cuenta
     private Sender sender;
 
     @Override
-    public Mono<M_Cuenta_DTO> crear_Cuenta(M_Cuenta_DTO p_Cuenta_DTO)
+    public Mono<AccountDTO> crear_Cuenta(AccountDTO p_Cuenta_DTO)
     {
-        M_CuentaMongo cuenta = new M_CuentaMongo(p_Cuenta_DTO.getId(),
-                new M_ClienteMongo(p_Cuenta_DTO.getCliente().getId(),
+        Account cuenta = new Account(p_Cuenta_DTO.getId(),
+                new Customer(p_Cuenta_DTO.getCliente().getId(),
                         p_Cuenta_DTO.getCliente().getNombre()),
                 p_Cuenta_DTO.getSaldo_Global());
 
@@ -40,19 +38,19 @@ public class Cuenta_ImpMongo implements I_Cuenta
 
         return repositorio_Cuenta.save(cuenta)
                 .map(cuentaModel-> {
-                    return new M_Cuenta_DTO(cuentaModel.getId(),
-                            new M_Cliente_DTO(cuentaModel.getCliente().getId(),
+                    return new AccountDTO(cuentaModel.getId(),
+                            new CustomerDTO(cuentaModel.getCliente().getId(),
                                     cuentaModel.getCliente().getNombre()),
                             cuentaModel.getSaldo_Global());
                 });
     }
 
     @Override
-    public Flux<M_Cuenta_DTO> findAll()
+    public Flux<AccountDTO> findAll()
     {
         return repositorio_Cuenta.findAll()
-                .map(cuentaModel -> new M_Cuenta_DTO(cuentaModel.getId(),
-                        new M_Cliente_DTO(cuentaModel.getCliente().getId(),
+                .map(cuentaModel -> new AccountDTO(cuentaModel.getId(),
+                        new CustomerDTO(cuentaModel.getCliente().getId(),
                                 cuentaModel.getCliente().getNombre()),
                         cuentaModel.getSaldo_Global()));
     }

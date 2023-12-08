@@ -1,7 +1,7 @@
 package com.corp.esaa.transactions.CuentaBancariaWebApplication.handlers.controllers;
 
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.M_Cuenta_DTO;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.services.Cuenta.I_Cuenta;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.AccountDTO;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.services.Cuenta.IAccountService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -13,22 +13,22 @@ import reactor.core.publisher.Mono;
 @Validated
 @RestController
 @RequestMapping("Cuentas")
-public class C_Cuenta
+public class AccountController
 {
 
     @Autowired
     @Qualifier("MONGO")
-    I_Cuenta cuenta;
+    IAccountService caccountServiceenta;
 
     @GetMapping(value = "/listar_cuentas")
-    public Flux<M_Cuenta_DTO> listar_cuentas()
+    public Flux<AccountDTO> listar_cuentas()
     {
-        return cuenta.findAll();
+        return caccountServiceenta.findAll();
     }
 
     @PostMapping(value = "/Crear")
-    public Mono<M_Cuenta_DTO> Crear_Cuenta( @RequestBody M_Cuenta_DTO p_cuenta)
+    public Mono<AccountDTO> Crear_Cuenta(@RequestBody AccountDTO p_cuenta)
     {
-        return cuenta.crear_Cuenta(p_cuenta);
+        return caccountServiceenta.crear_Cuenta(p_cuenta);
     }
 }

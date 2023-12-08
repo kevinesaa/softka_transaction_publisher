@@ -5,17 +5,17 @@ package com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO;
 import java.math.BigDecimal;
 
 
-public class M_Transaccion_DTO
+public class TransactionDTO
 {
     private String id;
-    private M_Cuenta_DTO cuenta;
+    private AccountDTO cuenta;
     private BigDecimal monto_transaccion;
     private BigDecimal saldo_inicial;
     private BigDecimal saldo_final;
     private BigDecimal costo_tansaccion;
     private String tipo;
 
-    public M_Transaccion_DTO(String id, M_Cuenta_DTO cuenta, BigDecimal monto_transaccion, BigDecimal saldo_inicial, BigDecimal saldo_final, BigDecimal costo_tansaccion, String tipo) {
+    public TransactionDTO(String id, AccountDTO cuenta, BigDecimal monto_transaccion, BigDecimal saldo_inicial, BigDecimal saldo_final, BigDecimal costo_tansaccion, String tipo) {
         this.id = id;
         this.cuenta = cuenta;
         this.monto_transaccion = monto_transaccion;
@@ -25,7 +25,7 @@ public class M_Transaccion_DTO
         this.tipo = tipo;
     }
 
-    public M_Cuenta_DTO getCuenta() {
+    public AccountDTO getCuenta() {
         return cuenta;
     }
 
@@ -37,7 +37,7 @@ public class M_Transaccion_DTO
         this.id = id;
     }
 
-    public void setCuenta(M_Cuenta_DTO cuenta) {
+    public void setCuenta(AccountDTO cuenta) {
         this.cuenta = cuenta;
     }
 

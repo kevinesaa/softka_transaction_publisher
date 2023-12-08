@@ -1,16 +1,15 @@
 package com.corp.esaa.transactions.CuentaBancariaWebApplication.services.Transaccion;
 
 import com.corp.esaa.transactions.CuentaBancariaWebApplication.drivenAdapters.bus.RabbitMqPublisher;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.drivenAdapters.repositorios.I_RepositorioCuentaMongo;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.drivenAdapters.repositorios.I_Repositorio_TransaccionMongo;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.M_Cliente_DTO;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.M_Cuenta_DTO;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.M_Transaccion_DTO;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.drivenAdapters.repositorios.IAccountRepository;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.drivenAdapters.repositorios.ITransactionRepository;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.CustomerDTO;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.AccountDTO;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.TransactionDTO;
 import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.WrapperDTD;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.Enum_Tipos_Deposito;
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.Mongo.M_TransaccionMongo;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.Mongo.TransactionType;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.Mongo.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -18,8 +17,7 @@ import reactor.core.publisher.Mono;
 import java.math.BigDecimal;
 
 @Service
-@Qualifier("MONGO")
-public class Transaccion_ImpMongo implements I_Transaccion
+public class TransactionService implements ITransactionService
 {
 
     private final double COSTO_CAJERO = 2.0;
@@ -28,18 +26,18 @@ public class Transaccion_ImpMongo implements I_Transaccion
 
     private final double COSTO_OTRO = 1.5;
     @Autowired
-    I_Repositorio_TransaccionMongo transaccion_repositorio;
+    ITransactionRepository transactionRepository;
 
     @Autowired
-    I_RepositorioCuentaMongo cuenta_repositorio;
+    IAccountRepository accountRepository;
 
     @Autowired
     private RabbitMqPublisher eventBus;
 
     @Override
-    public Mono<M_Transaccion_DTO> Procesar_Deposito(String id_Cuenta, Enum_Tipos_Deposito tipo, BigDecimal monto) {
+    public Mono<TransactionDTO> Procesar_Deposito(String id_Cuenta, TransactionType tipo, BigDecimal monto) {
 
-        return cuenta_repositorio.findById(id_Cuenta)
+        return accountRepository.findById(id_Cuenta)
                 .flatMap(cuenta -> {
                     BigDecimal costo = switch (tipo) {
                         case CAJERO -> BigDecimal.valueOf(COSTO_CAJERO);
@@ -49,7 +47,7 @@ public class Transaccion_ImpMongo implements I_Transaccion
                     BigDecimal bdSaldoActual = cuenta.getSaldo_Global();
                     BigDecimal bdSaldoNuevo = cuenta.getSaldo_Global().add(monto.subtract(costo));
                     cuenta.setSaldo_Global(bdSaldoNuevo);
-                    M_TransaccionMongo transaccion = new M_TransaccionMongo(
+                    Transaction transaccion = new Transaction(
                             cuenta,
                             monto,
                             bdSaldoActual,
@@ -58,12 +56,12 @@ public class Transaccion_ImpMongo implements I_Transaccion
                             tipo.toString()
                     );
 
-                    return transaccion_repositorio
+                    return transactionRepository
                             .save(transaccion)
                             .map(transactionModel -> {
-                                return new M_Transaccion_DTO(transactionModel.getId(),
-                                        new M_Cuenta_DTO(transactionModel.getCuenta().getId(),
-                                                new M_Cliente_DTO(transactionModel.getCuenta().getCliente().getId(),
+                                return new TransactionDTO(transactionModel.getId(),
+                                        new AccountDTO(transactionModel.getCuenta().getId(),
+                                                new CustomerDTO(transactionModel.getCuenta().getCliente().getId(),
                                                         transactionModel.getCuenta().getCliente().getNombre()
                                                 ),
                                                 transactionModel.getCuenta().getSaldo_Global()
@@ -76,7 +74,7 @@ public class Transaccion_ImpMongo implements I_Transaccion
                             })
                             .map(transaccionDTO -> {
 
-                                cuenta_repositorio.save(cuenta)
+                                accountRepository.save(cuenta)
                                         .flatMap(cuentaCreada -> Mono.error(new RuntimeException("Mensaje de pueba")))
                                         .onErrorResume(error -> {
                                             System.out.println("El error fue: " + error.getMessage());
@@ -100,13 +98,13 @@ public class Transaccion_ImpMongo implements I_Transaccion
     }
 
     @Override
-    public Flux<M_Transaccion_DTO> findAll()
+    public Flux<TransactionDTO> findAll()
     {
-        return transaccion_repositorio.findAll()
+        return transactionRepository.findAll()
                 .map(transaccion -> {
-                    return new M_Transaccion_DTO(transaccion.getId(),
-                            new M_Cuenta_DTO(transaccion.getCuenta().getId(),
-                                    new M_Cliente_DTO(transaccion.getCuenta().getCliente().getId(),
+                    return new TransactionDTO(transaccion.getId(),
+                            new AccountDTO(transaccion.getCuenta().getId(),
+                                    new CustomerDTO(transaccion.getCuenta().getCliente().getId(),
                                             transaccion.getCuenta().getCliente().getNombre()
                                     ),
                                     transaccion.getCuenta().getSaldo_Global()

@@ -1,7 +1,7 @@
 package com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO;
 
 
-public class M_Cliente_DTO
+public class CustomerDTO
 {
 
     private String id;
@@ -9,7 +9,7 @@ public class M_Cliente_DTO
 
     private String nombre;
 
-    public M_Cliente_DTO(String id, String nombre) {
+    public CustomerDTO(String id, String nombre) {
         this.id = id;
         this.nombre = nombre;
     }

@@ -4,14 +4,14 @@ package com.corp.esaa.transactions.CuentaBancariaWebApplication.models.Mongo;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document("M_ClienteMongo")
-public class M_ClienteMongo
+@Document("customers")
+public class Customer
 {
     @Id
     private String id;
     private String nombre;
 
-    public M_ClienteMongo(String id, String nombre)
+    public Customer(String id, String nombre)
     {
         this.id = id;
         this.nombre = nombre;

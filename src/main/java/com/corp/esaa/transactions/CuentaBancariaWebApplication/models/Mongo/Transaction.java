@@ -5,9 +5,9 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 
-@Document("M_TransaccionMongo")
+@Document("transactions")
+public class Transaction {
 
-public class M_TransaccionMongo {
     private String id;
     private BigDecimal monto_transaccion;
     private BigDecimal saldo_inicial;
@@ -16,11 +16,11 @@ public class M_TransaccionMongo {
     private String tipo;
 
     //-------------------------------------------------------------------------------------------------------------------------
-    private M_CuentaMongo cuenta;
+    private Account cuenta;
 
     //-------------------------------------------------------------------------------------------------------------------------
 
-    public M_TransaccionMongo(M_CuentaMongo cuenta, BigDecimal monto_transaccion, BigDecimal saldo_inicial, BigDecimal saldo_final, BigDecimal costo_tansaccion, String tipo) {
+    public Transaction(Account cuenta, BigDecimal monto_transaccion, BigDecimal saldo_inicial, BigDecimal saldo_final, BigDecimal costo_tansaccion, String tipo) {
         //this.id = id;
         this.cuenta = cuenta;
         this.monto_transaccion = monto_transaccion;
@@ -30,9 +30,7 @@ public class M_TransaccionMongo {
         this.tipo = tipo;
     }
 
-    public M_TransaccionMongo() {
 
-    }
 
     public String getId() {
         return id;
@@ -42,11 +40,11 @@ public class M_TransaccionMongo {
         this.id = id;
     }
 
-    public M_CuentaMongo getCuenta() {
+    public Account getCuenta() {
         return cuenta;
     }
 
-    public void setCuenta(M_CuentaMongo cuenta) {
+    public void setCuenta(Account cuenta) {
         this.cuenta = cuenta;
     }
 

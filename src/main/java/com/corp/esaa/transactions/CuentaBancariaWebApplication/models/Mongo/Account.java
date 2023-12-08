@@ -6,21 +6,21 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.math.BigDecimal;
 
-@Document("M_CuentaMongo")
-public class M_CuentaMongo
+@Document("accounts")
+public class Account
 {
     @Id
     private String id;
     private BigDecimal saldo_Global;
-    private M_ClienteMongo cliente;
+    private Customer cliente;
 
-    public M_CuentaMongo(String id, M_ClienteMongo cliente, BigDecimal saldo_Global) {
+    public Account(String id, Customer cliente, BigDecimal saldo_Global) {
         this.id = id;
         this.saldo_Global = saldo_Global;
         this.cliente = cliente;
     }
 
-    public M_CuentaMongo()
+    public Account()
     {
     }
 
@@ -40,11 +40,11 @@ public class M_CuentaMongo
         this.saldo_Global = saldo_Global;
     }
 
-    public M_ClienteMongo getCliente() {
+    public Customer getCliente() {
         return cliente;
     }
 
-    public void setCliente(M_ClienteMongo cliente) {
+    public void setCliente(Customer cliente) {
         this.cliente = cliente;
     }
 }

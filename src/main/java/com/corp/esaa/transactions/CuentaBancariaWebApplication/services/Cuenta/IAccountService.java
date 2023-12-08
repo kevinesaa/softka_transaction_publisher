@@ -1,12 +1,12 @@
 package com.corp.esaa.transactions.CuentaBancariaWebApplication.services.Cuenta;
 
-import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.M_Cuenta_DTO;
+import com.corp.esaa.transactions.CuentaBancariaWebApplication.models.DTO.AccountDTO;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-public interface I_Cuenta
+public interface IAccountService
 {
-    Mono<M_Cuenta_DTO> crear_Cuenta(M_Cuenta_DTO p_Cuenta);
+    Mono<AccountDTO> crear_Cuenta(AccountDTO p_Cuenta);
 
-    Flux<M_Cuenta_DTO> findAll();
+    Flux<AccountDTO> findAll();
 }

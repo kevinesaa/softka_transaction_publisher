@@ -1,6 +1,6 @@
-package com.corp.esaa.transactions.CuentaBancariaWebApplication.models;
+package com.corp.esaa.transactions.CuentaBancariaWebApplication.models.Mongo;
 
-public enum Enum_Tipos_Deposito
+public enum TransactionType
 {
     CAJERO,
     SUCURSAL,
