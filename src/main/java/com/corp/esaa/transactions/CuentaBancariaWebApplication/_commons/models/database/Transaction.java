@@ -15,10 +15,8 @@ public class Transaction {
     private BigDecimal costo_transaccion;
     private String tipo;
 
-    //-------------------------------------------------------------------------------------------------------------------------
     private Account cuenta;
 
-    //-------------------------------------------------------------------------------------------------------------------------
 
     public Transaction(Account cuenta, BigDecimal monto_transaccion, BigDecimal saldo_inicial, BigDecimal saldo_final, BigDecimal costo_tansaccion, String tipo) {
         //this.id = id;

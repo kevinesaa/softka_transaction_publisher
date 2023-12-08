@@ -3,5 +3,5 @@ package com.corp.esaa.transactions.CuentaBancariaWebApplication.customers.driven
 import com.corp.esaa.transactions.CuentaBancariaWebApplication._commons.models.database.Customer;
 import org.springframework.data.mongodb.repository.ReactiveMongoRepository;
 
-public interface customerRepository extends ReactiveMongoRepository<Customer,String> {
+public interface CustomerRepository extends ReactiveMongoRepository<Customer,String> {
 }
